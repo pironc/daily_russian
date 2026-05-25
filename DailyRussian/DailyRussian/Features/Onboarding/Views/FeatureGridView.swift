@@ -15,14 +15,13 @@ struct FeatureGridView: View {
                 title: "Which part of Daily Russian will help you most?",
                 onBack: { store.goBack() }
             ) {
-                LazyVGrid(columns: columns, spacing: 12) {
-                    ForEach(TopFeature.allCases) { feature in
-                        featureCell(feature)
+                BottomAlignedOptionsScrollView(bottomPadding: 16) {
+                    LazyVGrid(columns: columns, spacing: 12) {
+                        ForEach(TopFeature.allCases) { feature in
+                            featureCell(feature)
+                        }
                     }
                 }
-                .padding(.top, 8)
-
-                Spacer(minLength: 40)
             }
 
             HStack {
@@ -30,8 +29,8 @@ struct FeatureGridView: View {
                 SolidCompactContinueButton {
                     store.advanceFromFeatureGrid()
                 }
-                .opacity(store.profile.topFeature == nil ? 0.4 : 1)
-                .disabled(store.profile.topFeature == nil)
+                .opacity(store.profile.topFeatures.isEmpty ? 0.4 : 1)
+                .disabled(store.profile.topFeatures.isEmpty)
                 .padding(.trailing, OnboardingTheme.horizontalPadding)
                 .padding(.bottom, 24)
             }
@@ -41,9 +40,9 @@ struct FeatureGridView: View {
     }
 
     private func featureCell(_ feature: TopFeature) -> some View {
-        let selected = store.profile.topFeature == feature
+        let selected = store.profile.topFeatures.contains(feature)
         return Button {
-            store.selectTopFeature(feature)
+            store.toggleTopFeature(feature)
         } label: {
             VStack(spacing: 12) {
                 Image(systemName: OnboardingContent.featureIcon(feature))
@@ -52,7 +51,7 @@ struct FeatureGridView: View {
                     .frame(height: 56)
 
                 Text(OnboardingContent.featureTitle(feature))
-                    .font(.caption.weight(.medium))
+                    .font(.caption2.weight(.medium))
                     .foregroundStyle(selected ? OnboardingTheme.accent : OnboardingTheme.primaryText)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)

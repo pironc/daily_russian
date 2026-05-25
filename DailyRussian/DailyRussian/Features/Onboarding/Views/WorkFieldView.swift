@@ -9,7 +9,7 @@ struct WorkFieldView: View {
             title: "Which best describes your work?",
             onBack: { store.goBack() }
         ) {
-            ScrollView {
+            BottomAlignedOptionsScrollView {
                 VStack(spacing: OnboardingTheme.rowSpacing) {
                     ForEach(WorkField.allCases) { field in
                         SelectionRow(
@@ -20,8 +20,6 @@ struct WorkFieldView: View {
                         }
                     }
                 }
-                .padding(.top, 8)
-                .padding(.bottom, 32)
             }
         }
         .preferredColorScheme(.dark)

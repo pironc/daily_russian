@@ -3,15 +3,22 @@ import SwiftUI
 struct PersonaView: View {
     @Bindable var store: OnboardingStore
 
+    private let displayedPersonas: [UserPersona] = [
+        .workingProfessional,
+        .student,
+        .parent,
+        .teacher,
+    ]
+
     var body: some View {
         OnboardingChrome(
             progress: OnboardingStep.persona.progress,
             title: "Which best describes you?",
             onBack: { store.goBack() }
         ) {
-            ScrollView {
+            BottomAlignedOptionsScrollView {
                 VStack(spacing: OnboardingTheme.rowSpacing) {
-                    ForEach(UserPersona.allCases) { persona in
+                    ForEach(displayedPersonas) { persona in
                         SelectionRow(
                             emoji: OnboardingContent.personaEmoji(persona),
                             title: OnboardingContent.personaTitle(persona),
@@ -21,8 +28,6 @@ struct PersonaView: View {
                         }
                     }
                 }
-                .padding(.top, 8)
-                .padding(.bottom, 32)
             }
         }
         .preferredColorScheme(.dark)

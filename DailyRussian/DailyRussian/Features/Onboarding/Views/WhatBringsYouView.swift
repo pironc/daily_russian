@@ -9,26 +9,39 @@ struct WhatBringsYouView: View {
     }
 
     var body: some View {
-        OnboardingChrome(
-            progress: OnboardingStep.whatBringsYou.progress,
-            title: "What brings you to Daily Russian?",
-            onBack: { store.goBack() }
-        ) {
-            ScrollView {
-                VStack(spacing: OnboardingTheme.rowSpacing) {
-                    ForEach(goals) { goal in
-                        SelectionRow(
-                            emoji: OnboardingContent.primaryGoalEmoji(goal),
-                            title: OnboardingContent.primaryGoalLabel(goal)
-                        ) {
-                            store.selectPrimaryGoal(goal)
+        VStack(spacing: 0) {
+            OnboardingChrome(
+                progress: OnboardingStep.whatBringsYou.progress,
+                title: "What brings you to Daily Russian?",
+                onBack: { store.goBack() }
+            ) {
+                BottomAlignedOptionsScrollView {
+                    VStack(spacing: OnboardingTheme.rowSpacing) {
+                        ForEach(goals) { goal in
+                            SelectionRow(
+                                emoji: OnboardingContent.primaryGoalEmoji(goal),
+                                title: OnboardingContent.primaryGoalLabel(goal),
+                                isSelected: store.profile.primaryGoals.contains(goal)
+                            ) {
+                                store.togglePrimaryGoal(goal)
+                            }
                         }
                     }
                 }
-                .padding(.top, 8)
-                .padding(.bottom, 32)
+            }
+
+            HStack {
+                Spacer()
+                SolidCompactContinueButton {
+                    store.advanceFromWhatBringsYou()
+                }
+                .opacity(store.profile.primaryGoals.isEmpty ? 0.4 : 1)
+                .disabled(store.profile.primaryGoals.isEmpty)
+                .padding(.trailing, OnboardingTheme.horizontalPadding)
+                .padding(.bottom, 24)
             }
         }
+        .background(OnboardingTheme.background)
         .preferredColorScheme(.dark)
     }
 }

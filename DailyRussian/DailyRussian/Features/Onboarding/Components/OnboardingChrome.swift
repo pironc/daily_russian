@@ -49,3 +49,22 @@ struct OnboardingChrome<Content: View>: View {
         .background(OnboardingTheme.background)
     }
 }
+
+struct BottomAlignedOptionsScrollView<Content: View>: View {
+    var bottomPadding: CGFloat = 32
+    @ViewBuilder let content: () -> Content
+
+    var body: some View {
+        GeometryReader { proxy in
+            ScrollView {
+                VStack(spacing: 0) {
+                    Spacer(minLength: 0)
+
+                    content()
+                        .padding(.bottom, bottomPadding)
+                }
+                .frame(minHeight: proxy.size.height, alignment: .bottom)
+            }
+        }
+    }
+}

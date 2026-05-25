@@ -11,7 +11,7 @@ struct ReferralSourceIcon: View {
             switch source {
             case .facebook:
                 facebookIcon
-            case .instagramReels:
+            case .instagram:
                 instagramIcon
             case .tiktok:
                 tiktokIcon
@@ -23,7 +23,7 @@ struct ReferralSourceIcon: View {
                     .foregroundStyle(.white)
             case .reddit:
                 redditIcon
-            case .friendsFamily:
+            case .friendsAndFamily:
                 Text("💬").font(.title2)
             case .other:
                 Text("✍️").font(.title2)

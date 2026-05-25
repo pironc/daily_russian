@@ -18,8 +18,6 @@ struct OnboardingCoordinatorView: View {
                 PersonaView(store: store)
             case .workField:
                 WorkFieldView(store: store)
-            case .socialProof:
-                SocialProofView(store: store)
             case .whatBringsYou:
                 WhatBringsYouView(store: store)
             case .testimonial:

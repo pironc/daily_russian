@@ -7,13 +7,13 @@ enum OnboardingContent {
 
     static func referralLabel(_ source: ReferralSource) -> String {
         switch source {
-        case .instagramReels: "Instagram Reels"
+        case .instagram: "Instagram"
         case .tiktok: "TikTok"
         case .facebook: "Facebook"
         case .appStore: "App Store"
         case .reddit: "Reddit"
         case .chatGPT: "ChatGPT"
-        case .friendsFamily: "From friends or family"
+        case .friendsAndFamily: "From friends and family"
         case .other: "Other"
         }
     }
@@ -80,93 +80,44 @@ enum OnboardingContent {
         }
     }
 
-    static func workFieldRoleHighlight(_ field: WorkField) -> String {
-        switch field {
-        case .finance: "finance professionals"
-        case .education: "educators"
-        case .healthcare: "healthcare professionals"
-        case .legal: "legal professionals"
-        case .businessOwner: "business owners"
-        case .creativeMedia: "creatives"
-        case .managerExecutive: "managers and executives"
-        case .publicService: "public service professionals"
-        case .salesMarketing: "sales and marketing professionals"
-        }
-    }
+    // MARK: - Primary goals
 
-    static func socialProofBullets(for field: WorkField) -> [String] {
-        switch field {
-        case .finance:
-            return [
-                "Practice business Russian phrases",
-                "Prepare for meetings abroad",
-                "Review financial news in Russian",
-                "Chat through Russian PDF reports",
-            ]
-        default:
-            return [
-                "Build daily vocabulary habits",
-                "Practice real-world conversations",
-                "Track progress toward fluency",
-            ]
-        }
-    }
-
-    // MARK: - Primary goals by persona
-
-    static func primaryGoals(for persona: UserPersona) -> [PrimaryGoal] {
-        switch persona {
-        case .workingProfessional:
-            return [.focusMeetingsCalls, .notesTakenForMe, .summarizeDocs, .learnFaster, .somethingElse]
-        case .teacher:
-            return [.captureClassNotes, .aiPracticeTests, .meetingNotes, .testingForStudents, .somethingElse]
-        case .student:
-            return [.passExam, .dailyConversation, .grammarFoundations, .immersionContent, .somethingElse]
-        case .parent:
-            return [.helpChildHomework, .kidExamPrep, .learnTogether, .somethingElse]
-        case .administrator:
-            return [.pilotProgram, .teacherTools, .districtEvaluation, .somethingElse]
-        }
+    static func primaryGoals(for _: UserPersona) -> [PrimaryGoal] {
+        [
+            .conversation,
+            .travel,
+            .cultureMedia,
+            .familyFriends,
+            .workBusiness,
+            .schoolExam,
+            .heritage,
+            .brainTraining,
+        ]
     }
 
     static func primaryGoalLabel(_ goal: PrimaryGoal) -> String {
         switch goal {
-        case .focusMeetingsCalls: "Focus in meetings and calls"
-        case .notesTakenForMe: "Have my notes taken for me"
-        case .summarizeDocs: "Summarize docs (videos, PDFs)"
-        case .learnFaster: "Learn 10x faster"
-        case .somethingElse: "Something else"
-        case .captureClassNotes: "Capture & send class notes"
-        case .aiPracticeTests: "Have AI make practice tests, etc"
-        case .meetingNotes: "Have meeting notes taken for me"
-        case .testingForStudents: "Testing Daily Russian for my students"
-        case .passExam: "Pass an exam or certification"
-        case .dailyConversation: "Hold daily conversations"
-        case .grammarFoundations: "Master grammar foundations"
-        case .immersionContent: "Immerse with videos and podcasts"
-        case .helpChildHomework: "Help with homework"
-        case .kidExamPrep: "Prep my child for an exam"
-        case .learnTogether: "Learn together as a family"
-        case .pilotProgram: "Pilot a program"
-        case .teacherTools: "Tools for teachers"
-        case .districtEvaluation: "Evaluate for my district or school"
+        case .conversation: "Hold real conversations"
+        case .travel: "Travel or live abroad"
+        case .cultureMedia: "Understand movies, music, books..."
+        case .familyFriends: "Talk with family or friends"
+        case .workBusiness: "Use Russian for work"
+        case .schoolExam: "Study for class or an exam"
+        case .heritage: "Reconnect with heritage"
+        case .brainTraining: "Learn for fun or mental challenge"
         }
     }
 
     static func primaryGoalEmoji(_ goal: PrimaryGoal) -> String {
         switch goal {
-        case .focusMeetingsCalls, .meetingNotes: "🎙️"
-        case .notesTakenForMe, .captureClassNotes, .somethingElse: "✍️"
-        case .summarizeDocs: "💻"
-        case .learnFaster, .immersionContent: "📗"
-        case .aiPracticeTests: "📝"
-        case .testingForStudents, .districtEvaluation: "👀"
-        case .passExam, .kidExamPrep: "📅"
-        case .dailyConversation: "💬"
-        case .grammarFoundations: "📖"
-        case .helpChildHomework: "🏠"
-        case .learnTogether: "👨‍👩‍👧"
-        case .pilotProgram, .teacherTools: "🏫"
+        case .conversation: "💬"
+        case .travel: "✈️"
+        case .cultureMedia: "🎧"
+        case .familyFriends: "👨‍👩‍👧"
+        case .workBusiness: "💼"
+        case .schoolExam: "📚"
+        case .heritage: "🏠"
+        case .brainTraining: "🧠"
         }
     }
 

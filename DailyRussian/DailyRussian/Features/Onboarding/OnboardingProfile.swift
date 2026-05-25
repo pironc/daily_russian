@@ -3,58 +3,84 @@ import Foundation
 struct OnboardingProfile: Codable, Equatable {
     var schemaVersion: Int = 1
 
-    var referralSource: ReferralSource?
+    var referralSource: OnboardingAnswer?
     var persona: UserPersona?
     var workField: WorkField?
-    var primaryGoal: PrimaryGoal?
-    var topFeature: TopFeature?
-    var studyFocus: StudyFocus?
+    var primaryGoals: [PrimaryGoal] = []
+    var topFeatures: [TopFeature] = []
+    var studyFocus: OnboardingAnswer?
     var dailyGoal: DailyGoal?
-    var dailyGoalMinutes: Int?
 
     var onboardingCompletedAt: Date?
     var localeIdentifier: String?
     var appVersion: String?
 }
 
+struct OnboardingAnswer: Codable, Equatable {
+    let value: String
+    var custom: Bool?
+
+    static func preset(_ value: String) -> OnboardingAnswer {
+        OnboardingAnswer(value: value)
+    }
+
+    static func custom(_ value: String) -> OnboardingAnswer {
+        OnboardingAnswer(value: value, custom: true)
+    }
+}
+
 enum ReferralSource: String, Codable, CaseIterable, Identifiable {
-    case instagramReels, tiktok, facebook, appStore, reddit, chatGPT, friendsFamily, other
+    case instagram, tiktok, facebook, appStore, reddit, chatGPT
+    case friendsAndFamily = "friendsFamily"
+    case other
     var id: String { rawValue }
+
+    var selectionID: String {
+        switch self {
+        case .friendsAndFamily:
+            return "friends_and_family"
+        default:
+            return rawValue.snakeCasedIdentifier
+        }
+    }
 }
 
 enum UserPersona: String, Codable, CaseIterable, Identifiable {
     case workingProfessional, student, parent, teacher, administrator
     var id: String { rawValue }
+    var selectionID: String { rawValue.snakeCasedIdentifier }
 }
 
 enum WorkField: String, Codable, CaseIterable, Identifiable {
     case businessOwner, creativeMedia, education, finance, healthcare, legal
     case managerExecutive, publicService, salesMarketing
     var id: String { rawValue }
+    var selectionID: String { rawValue.snakeCasedIdentifier }
 }
 
 enum PrimaryGoal: String, Codable, Identifiable {
-    case focusMeetingsCalls, notesTakenForMe, summarizeDocs, learnFaster, somethingElse
-    case captureClassNotes, aiPracticeTests, meetingNotes, testingForStudents
-    case passExam, dailyConversation, grammarFoundations, immersionContent
-    case helpChildHomework, kidExamPrep, learnTogether
-    case pilotProgram, teacherTools, districtEvaluation
+    case conversation, travel, cultureMedia, familyFriends
+    case workBusiness, schoolExam, heritage, brainTraining
     var id: String { rawValue }
+    var selectionID: String { rawValue.snakeCasedIdentifier }
 }
 
 enum TopFeature: String, Codable, CaseIterable, Identifiable {
     case vocabularyDrills, listeningPractice, grammarGames, structuredCourse
     var id: String { rawValue }
+    var selectionID: String { rawValue.snakeCasedIdentifier }
 }
 
 enum StudyFocus: String, Codable, CaseIterable, Identifiable {
     case specificClass, upcomingExam, somethingElse, generalHelp
     var id: String { rawValue }
+    var selectionID: String { rawValue.snakeCasedIdentifier }
 }
 
 enum DailyGoal: String, Codable, CaseIterable, Identifiable {
     case casual, regular, serious, intense
     var id: String { rawValue }
+    var selectionID: String { rawValue.snakeCasedIdentifier }
 
     var minutes: Int {
         switch self {
@@ -66,11 +92,25 @@ enum DailyGoal: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+private extension String {
+    var snakeCasedIdentifier: String {
+        var previousWasLowercaseOrNumber = false
+
+        return reduce(into: "") { result, character in
+            if character.isUppercase, previousWasLowercaseOrNumber {
+                result.append("_")
+            }
+
+            result.append(character.lowercased())
+            previousWasLowercaseOrNumber = character.isLowercase || character.isNumber
+        }
+    }
+}
+
 enum OnboardingStep: Hashable {
     case referral
     case persona
     case workField
-    case socialProof
     case whatBringsYou
     case testimonial
     case featureGrid
@@ -82,12 +122,11 @@ enum OnboardingStep: Hashable {
         case .referral: 0.12
         case .persona: 0.20
         case .workField: 0.30
-        case .socialProof: 0.38
-        case .whatBringsYou: 0.48
-        case .testimonial: 0.55
-        case .featureGrid: 0.65
-        case .classExam: 0.75
-        case .dailyGoal: 0.85
+        case .whatBringsYou: 0.42
+        case .testimonial: 0.54
+        case .featureGrid: 0.66
+        case .classExam: 0.78
+        case .dailyGoal: 0.88
         }
     }
 }

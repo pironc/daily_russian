@@ -3,15 +3,17 @@ import SwiftUI
 struct ReferralSourceView: View {
     @Bindable var store: OnboardingStore
     let onBack: () -> Void
+    @State private var isShowingOtherPrompt = false
+    @State private var otherReferralDraft = ""
 
     private let displayedReferralSources: [ReferralSource] = [
-        .instagramReels,
+        .instagram,
         .tiktok,
         .facebook,
         .appStore,
         .reddit,
         // .chatGPT,
-        .friendsFamily,
+        .friendsAndFamily,
         .other,
     ]
 
@@ -21,21 +23,52 @@ struct ReferralSourceView: View {
             title: "How did you hear about Daily Russian?",
             onBack: onBack
         ) {
-            ScrollView {
+            BottomAlignedOptionsScrollView {
                 VStack(spacing: OnboardingTheme.rowSpacing) {
                     ForEach(displayedReferralSources) { source in
                         SelectionRow(
                             icon: { ReferralSourceIcon(source: source) },
-                            title: OnboardingContent.referralLabel(source)
+                            title: OnboardingContent.referralLabel(source),
+                            isSelected: isSelected(source)
                         ) {
-                            store.selectReferral(source)
+                            select(source)
                         }
                     }
                 }
-                .padding(.top, 8)
-                .padding(.bottom, 32)
             }
         }
+        .alert("Other", isPresented: $isShowingOtherPrompt) {
+            TextField("Where did you hear about us?", text: $otherReferralDraft)
+                .textInputAutocapitalization(.sentences)
+
+            Button("Continue") {
+                store.completeReferralCustomSelection(otherReferralDraft)
+            }
+            .disabled(OnboardingInputSanitizer.sanitizeFreeform(otherReferralDraft).isEmpty)
+
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Tell us where you heard about Daily Russian.")
+        }
         .preferredColorScheme(.dark)
+    }
+
+    private func select(_ source: ReferralSource) {
+        if source == .other {
+            otherReferralDraft = store.profile.referralSource?.custom == true ? store.profile.referralSource?.value ?? "" : ""
+            store.selectReferral(source)
+            isShowingOtherPrompt = true
+        } else {
+            store.selectReferral(source)
+        }
+    }
+
+    private func isSelected(_ source: ReferralSource) -> Bool {
+        if source == .other {
+            return store.profile.referralSource?.custom == true
+        }
+
+        return store.profile.referralSource?.value == source.selectionID
+            && store.profile.referralSource?.custom != true
     }
 }
