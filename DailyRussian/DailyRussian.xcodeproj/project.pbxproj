@@ -6,8 +6,37 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3A000000000000000000000C /* DailyRussianWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3A0000000000000000000001 /* DailyRussianWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3A000000000000000000000E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FC274922FC43C2B00BD4186 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3A0000000000000000000007;
+			remoteInfo = DailyRussianWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3A000000000000000000000B /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3A000000000000000000000C /* DailyRussianWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		2FC2749A2FC43C2B00BD4186 /* DailyRussian.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyRussian.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A0000000000000000000001 /* DailyRussianWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DailyRussianWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +45,27 @@
 			path = DailyRussian;
 			sourceTree = "<group>";
 		};
+		3A0000000000000000000002 /* DailyRussianWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DailyRussianWidget;
+			sourceTree = "<group>";
+		};
+		3A0000000000000000000003 /* DailyRussian/Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DailyRussian/Shared;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		2FC274972FC43C2B00BD4186 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A0000000000000000000005 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +79,8 @@
 			isa = PBXGroup;
 			children = (
 				2FC2749C2FC43C2B00BD4186 /* DailyRussian */,
+				3A0000000000000000000002 /* DailyRussianWidget */,
+				3A0000000000000000000003 /* DailyRussian/Shared */,
 				2FC2749B2FC43C2B00BD4186 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				2FC2749A2FC43C2B00BD4186 /* DailyRussian.app */,
+				3A0000000000000000000001 /* DailyRussianWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -55,10 +104,12 @@
 				2FC274962FC43C2B00BD4186 /* Sources */,
 				2FC274972FC43C2B00BD4186 /* Frameworks */,
 				2FC274982FC43C2B00BD4186 /* Resources */,
+				3A000000000000000000000B /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3A000000000000000000000D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				2FC2749C2FC43C2B00BD4186 /* DailyRussian */,
@@ -69,6 +120,29 @@
 			productName = DailyRussian;
 			productReference = 2FC2749A2FC43C2B00BD4186 /* DailyRussian.app */;
 			productType = "com.apple.product-type.application";
+		};
+		3A0000000000000000000007 /* DailyRussianWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A0000000000000000000008 /* Build configuration list for PBXNativeTarget "DailyRussianWidget" */;
+			buildPhases = (
+				3A0000000000000000000004 /* Sources */,
+				3A0000000000000000000005 /* Frameworks */,
+				3A0000000000000000000006 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3A0000000000000000000002 /* DailyRussianWidget */,
+				3A0000000000000000000003 /* DailyRussian/Shared */,
+			);
+			name = DailyRussianWidget;
+			packageProductDependencies = (
+			);
+			productName = DailyRussianWidget;
+			productReference = 3A0000000000000000000001 /* DailyRussianWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -81,6 +155,9 @@
 				LastUpgradeCheck = 2650;
 				TargetAttributes = {
 					2FC274992FC43C2B00BD4186 = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					3A0000000000000000000007 = {
 						CreatedOnToolsVersion = 26.5;
 					};
 				};
@@ -100,12 +177,20 @@
 			projectRoot = "";
 			targets = (
 				2FC274992FC43C2B00BD4186 /* DailyRussian */,
+				3A0000000000000000000007 /* DailyRussianWidget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		2FC274982FC43C2B00BD4186 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A0000000000000000000006 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +207,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3A0000000000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3A000000000000000000000D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3A0000000000000000000007 /* DailyRussianWidget */;
+			targetProxy = 3A000000000000000000000E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		2FC274A32FC43C2C00BD4186 /* Debug */ = {
@@ -251,11 +351,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DailyRussian/DailyRussian.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FBSE4G2CSL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Daily Russian";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -283,11 +385,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DailyRussian/DailyRussian.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FBSE4G2CSL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Daily Russian";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -303,6 +407,64 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		3A0000000000000000000009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = DailyRussianWidget/DailyRussianWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FBSE4G2CSL;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DailyRussianWidgetInfo.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pironc.DailyRussian.DailyRussianWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3A000000000000000000000A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = DailyRussianWidget/DailyRussianWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FBSE4G2CSL;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DailyRussianWidgetInfo.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pironc.DailyRussian.DailyRussianWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
@@ -327,6 +489,15 @@
 			buildConfigurations = (
 				2FC274A62FC43C2C00BD4186 /* Debug */,
 				2FC274A72FC43C2C00BD4186 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3A0000000000000000000008 /* Build configuration list for PBXNativeTarget "DailyRussianWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A0000000000000000000009 /* Debug */,
+				3A000000000000000000000A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
