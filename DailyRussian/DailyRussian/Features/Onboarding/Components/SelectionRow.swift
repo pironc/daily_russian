@@ -1,13 +1,24 @@
 import SwiftUI
 
 struct SelectionRow: View {
+    private let iconBuilder: (() -> AnyView)?
     let emoji: String?
     let systemImage: String?
     let title: String
     var subtitle: String?
     let action: () -> Void
 
+    init<I: View>(icon: @escaping () -> I, title: String, subtitle: String? = nil, action: @escaping () -> Void) {
+        self.iconBuilder = { AnyView(icon()) }
+        self.emoji = nil
+        self.systemImage = nil
+        self.title = title
+        self.subtitle = subtitle
+        self.action = action
+    }
+
     init(emoji: String, title: String, subtitle: String? = nil, action: @escaping () -> Void) {
+        self.iconBuilder = nil
         self.emoji = emoji
         self.systemImage = nil
         self.title = title
@@ -16,6 +27,7 @@ struct SelectionRow: View {
     }
 
     init(systemImage: String, title: String, subtitle: String? = nil, action: @escaping () -> Void) {
+        self.iconBuilder = nil
         self.emoji = nil
         self.systemImage = systemImage
         self.title = title
@@ -26,7 +38,9 @@ struct SelectionRow: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 14) {
-                if let emoji {
+                if let iconBuilder {
+                    iconBuilder()
+                } else if let emoji {
                     Text(emoji)
                         .font(.title2)
                         .frame(width: 36, alignment: .center)

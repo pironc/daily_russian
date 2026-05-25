@@ -16,8 +16,11 @@ struct PrimaryContinueButton: View {
             .foregroundStyle(.black)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 18)
-            .background(Color.white)
-            .clipShape(Capsule())
+            .background {
+                Capsule()
+                    .fill(Color.white)
+            }
+            .contentShape(Capsule())
         }
         .buttonStyle(.plain)
     }
@@ -62,24 +65,13 @@ struct SolidCompactContinueButton: View {
             .foregroundStyle(.black)
             .padding(.horizontal, 24)
             .padding(.vertical, 14)
-            .background(Color.white)
-            .clipShape(Capsule())
+            .background {
+                Capsule()
+                    .fill(Color.white)
+            }
+            .contentShape(Capsule())
         }
         .buttonStyle(.plain)
-    }
-}
-
-struct FeatureChip: View {
-    let label: String
-
-    var body: some View {
-        HStack(spacing: 6) {
-            Image(systemName: "checkmark.circle.fill")
-                .foregroundStyle(OnboardingTheme.checkGreen)
-            Text(label)
-                .font(.subheadline)
-                .foregroundStyle(OnboardingTheme.secondaryText)
-        }
     }
 }
 

@@ -18,19 +18,6 @@ enum OnboardingContent {
         }
     }
 
-    static func referralSymbol(_ source: ReferralSource) -> String {
-        switch source {
-        case .instagramReels: "camera"
-        case .tiktok: "music.note"
-        case .facebook: "f.circle.fill"
-        case .appStore: "apple.logo"
-        case .reddit: "bubble.left.and.bubble.right.fill"
-        case .chatGPT: "sparkles"
-        case .friendsFamily: "person.2.fill"
-        case .other: "pencil"
-        }
-    }
-
     // MARK: - Persona
 
     static func personaTitle(_ persona: UserPersona) -> String {

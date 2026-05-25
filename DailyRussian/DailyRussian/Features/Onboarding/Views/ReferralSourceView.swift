@@ -4,6 +4,17 @@ struct ReferralSourceView: View {
     @Bindable var store: OnboardingStore
     let onBack: () -> Void
 
+    private let displayedReferralSources: [ReferralSource] = [
+        .instagramReels,
+        .tiktok,
+        .facebook,
+        .appStore,
+        .reddit,
+        // .chatGPT,
+        .friendsFamily,
+        .other,
+    ]
+
     var body: some View {
         OnboardingChrome(
             progress: OnboardingStep.referral.progress,
@@ -12,9 +23,9 @@ struct ReferralSourceView: View {
         ) {
             ScrollView {
                 VStack(spacing: OnboardingTheme.rowSpacing) {
-                    ForEach(ReferralSource.allCases) { source in
+                    ForEach(displayedReferralSources) { source in
                         SelectionRow(
-                            systemImage: OnboardingContent.referralSymbol(source),
+                            icon: { ReferralSourceIcon(source: source) },
                             title: OnboardingContent.referralLabel(source)
                         ) {
                             store.selectReferral(source)

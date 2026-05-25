@@ -42,20 +42,14 @@ struct SocialProofView: View {
     }
 
     private var socialProofText: some View {
-        let role = OnboardingContent.workFieldRoleHighlight(field)
-        return (
-            Text("We have ")
-                .foregroundStyle(OnboardingTheme.primaryText)
-            + Text("thousands of ")
-                .foregroundStyle(OnboardingTheme.primaryText)
-            + Text(role)
-                .foregroundStyle(OnboardingTheme.accent)
-                .bold()
-            + Text(" learning with Daily Russian to:")
-                .foregroundStyle(OnboardingTheme.primaryText)
-        )
-        .font(.body)
-        .multilineTextAlignment(.center)
-        .frame(maxWidth: .infinity)
+        let highlightedRole = Text(OnboardingContent.workFieldRoleHighlight(field))
+            .foregroundStyle(OnboardingTheme.accent)
+            .bold()
+
+        return Text("We have thousands of \(highlightedRole) learning with Daily Russian to:")
+            .foregroundStyle(OnboardingTheme.primaryText)
+            .font(.body)
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity)
     }
 }
