@@ -66,12 +66,6 @@ struct SelectionRow: View {
                     }
                 }
                 Spacer(minLength: 0)
-
-                if isSelected {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.title3)
-                        .foregroundStyle(OnboardingTheme.accent)
-                }
             }
             .padding(.horizontal, 16)
             .padding(.vertical, subtitle == nil ? 18 : 14)

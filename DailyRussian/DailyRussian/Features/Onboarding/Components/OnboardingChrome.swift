@@ -31,6 +31,8 @@ struct OnboardingChrome<Content: View>: View {
                     }
                 }
                 .frame(height: 6)
+
+                Color.clear.frame(width: 44, height: 44)
             }
 
             Text(OnboardingContent.personalizeSubtitle)
