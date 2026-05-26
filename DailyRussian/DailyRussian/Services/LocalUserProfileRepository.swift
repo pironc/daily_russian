@@ -25,9 +25,10 @@ final class LocalUserProfileRepository: UserProfileRepository {
         if let data = try? JSONEncoder().encode(profile) {
             defaults.set(data, forKey: Keys.profile)
         }
-        if profile.onboardingCompletedAt != nil {
-            defaults.set(true, forKey: Keys.completed)
-        }
+    }
+
+    func markOnboardingCompleted() {
+        defaults.set(true, forKey: Keys.completed)
     }
 
     func markOnboardingIncomplete() {

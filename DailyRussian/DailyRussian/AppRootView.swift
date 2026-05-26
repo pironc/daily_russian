@@ -12,6 +12,10 @@ struct AppRootView: View {
                         appState.resetOnboarding()
                     }
                 )
+            } else if appState.showPostOnboardingTrial {
+                PostOnboardingTrialView(
+                    onComplete: { appState.completePostOnboardingSetup() }
+                )
             } else if appState.showSignIn {
                 SignInPlaceholderView {
                     appState.showSignIn = false
@@ -42,16 +46,26 @@ final class AppState {
     var hasCompletedOnboarding: Bool
     var showOnboarding = false
     var showSignIn = false
+    var showPostOnboardingTrial: Bool
 
     init(repository: UserProfileRepository = LocalUserProfileRepository()) {
         self.repository = repository
         self.onboardingStore = OnboardingStore(repository: repository)
         self.hasCompletedOnboarding = repository.hasCompletedOnboarding
+        self.showPostOnboardingTrial = !repository.hasCompletedOnboarding
+            && repository.loadProfile()?.onboardingCompletedAt != nil
     }
 
     func finishOnboarding() {
-        hasCompletedOnboarding = true
         showOnboarding = false
+        showPostOnboardingTrial = true
+    }
+
+    func completePostOnboardingSetup() {
+        repository.markOnboardingCompleted()
+        hasCompletedOnboarding = true
+        showPostOnboardingTrial = false
+        showSignIn = false
     }
 
     func resetOnboarding() {
@@ -60,6 +74,7 @@ final class AppState {
         hasCompletedOnboarding = false
         showOnboarding = false
         showSignIn = false
+        showPostOnboardingTrial = false
     }
 }
 
