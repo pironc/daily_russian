@@ -370,6 +370,29 @@ private struct AppleAccountPromptView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
 
+            #if DEBUG
+            Button {
+                onComplete()
+            } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "apple.logo")
+                        .font(.headline)
+                    Text("Continue with Apple")
+                        .font(.headline.weight(.semibold))
+                }
+                .foregroundStyle(.black)
+                .frame(maxWidth: .infinity)
+                .frame(height: 56)
+                .background(.white, in: Capsule())
+            }
+            .buttonStyle(.plain)
+            .padding(.top, 10)
+
+            Text("DEBUG: simulated Apple ID. Real Sign in with Apple requires a paid Apple Developer team.")
+                .font(.footnote)
+                .foregroundStyle(OnboardingTheme.secondaryText)
+                .multilineTextAlignment(.center)
+            #else
             SignInWithAppleButton(.continue) { request in
                 request.requestedScopes = [.fullName, .email]
             } onCompletion: { result in
@@ -384,6 +407,7 @@ private struct AppleAccountPromptView: View {
             .frame(height: 56)
             .clipShape(Capsule())
             .padding(.top, 10)
+            #endif
 
             if let errorMessage {
                 Text(errorMessage)
@@ -391,14 +415,6 @@ private struct AppleAccountPromptView: View {
                     .foregroundStyle(OnboardingTheme.accent)
                     .multilineTextAlignment(.center)
             }
-
-            #if DEBUG
-            Button("Skip account creation (debug)") {
-                onComplete()
-            }
-            .font(.caption)
-            .foregroundStyle(OnboardingTheme.secondaryText)
-            #endif
 
             Spacer()
         }

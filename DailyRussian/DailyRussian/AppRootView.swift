@@ -8,6 +8,14 @@ struct AppRootView: View {
             if appState.hasCompletedOnboarding {
                 MainPlaceholderView(
                     profile: appState.repository.loadProfile(),
+                    isShowingDictionary: appState.isShowingDictionary,
+                    dictionaryWordRank: appState.dictionaryWordRank,
+                    onOpenDictionary: { rank in
+                        appState.openDictionary(rank: rank)
+                    },
+                    onCloseDictionary: {
+                        appState.closeDictionary()
+                    },
                     onResetOnboarding: {
                         appState.resetOnboarding()
                     }
@@ -35,6 +43,9 @@ struct AppRootView: View {
         }
         .animation(.easeInOut(duration: 0.3), value: appState.hasCompletedOnboarding)
         .animation(.easeInOut(duration: 0.3), value: appState.showOnboarding)
+        .onOpenURL { url in
+            appState.handleOpenURL(url)
+        }
     }
 }
 
@@ -47,6 +58,8 @@ final class AppState {
     var showOnboarding = false
     var showSignIn = false
     var showPostOnboardingTrial: Bool
+    var isShowingDictionary = false
+    var dictionaryWordRank: Int?
 
     init(repository: UserProfileRepository = LocalUserProfileRepository()) {
         self.repository = repository
@@ -75,6 +88,33 @@ final class AppState {
         showOnboarding = false
         showSignIn = false
         showPostOnboardingTrial = false
+        isShowingDictionary = false
+        dictionaryWordRank = nil
+    }
+
+    func openDictionary(rank: Int?) {
+        dictionaryWordRank = rank
+        isShowingDictionary = true
+    }
+
+    func closeDictionary() {
+        dictionaryWordRank = nil
+        isShowingDictionary = false
+    }
+
+    func handleOpenURL(_ url: URL) {
+        guard url.scheme == "dailyrussian",
+              url.host == "dictionary" else {
+            return
+        }
+
+        let rank = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+            .queryItems?
+            .first { $0.name == "rank" }?
+            .value
+            .flatMap(Int.init)
+
+        openDictionary(rank: rank)
     }
 }
 

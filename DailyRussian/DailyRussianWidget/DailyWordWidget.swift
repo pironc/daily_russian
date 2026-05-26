@@ -19,8 +19,10 @@ struct DailyWordProvider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<DailyWordEntry>) -> Void) {
         let now = Date()
         var store = DailyWordStore()
-        let entry = DailyWordEntry(date: now, word: store.wordForToday(now: now))
-        completion(Timeline(entries: [entry], policy: .after(store.nextRefreshDate(after: now))))
+        let entries = store.timelineItems(startingAt: now).map {
+            DailyWordEntry(date: $0.date, word: $0.word)
+        }
+        completion(Timeline(entries: entries, policy: .after(store.nextRefreshDate(after: entries.last?.date ?? now))))
     }
 }
 
@@ -29,16 +31,19 @@ struct DailyWordWidgetView: View {
     let entry: DailyWordEntry
 
     var body: some View {
-        switch widgetFamily {
-        case .accessoryInline:
-            inlineContent
-        case .accessoryCircular:
-            circularContent
-        case .accessoryRectangular:
-            lockScreenRectangularContent
-        default:
-            springboardContent
+        Group {
+            switch widgetFamily {
+            case .accessoryInline:
+                inlineContent
+            case .accessoryCircular:
+                circularContent
+            case .accessoryRectangular:
+                lockScreenRectangularContent
+            default:
+                springboardContent
+            }
         }
+        .widgetURL(dictionaryURL(for: entry.word))
     }
 
     private var springboardContent: some View {
@@ -249,6 +254,11 @@ struct DailyWordWidgetView: View {
             || wordClass.contains("adverb")
             || wordClass.contains("conj")
     }
+
+    private func dictionaryURL(for word: DailyRussianWord?) -> URL? {
+        guard let word else { return nil }
+        return URL(string: "dailyrussian://dictionary?rank=\(word.rank)")
+    }
 }
 
 struct DailyWordWidget: Widget {
@@ -274,22 +284,12 @@ struct DailyWordWidget: Widget {
     }
 
     private var supportedFamilies: [WidgetFamily] {
-        #if DEBUG
-        [
-            .systemSmall,
-            .systemMedium,
-            .accessoryInline,
-            .accessoryCircular,
-            .accessoryRectangular,
-        ]
-        #else
         [
             .systemSmall,
             .accessoryInline,
             .accessoryCircular,
             .accessoryRectangular,
         ]
-        #endif
     }
 }
 
