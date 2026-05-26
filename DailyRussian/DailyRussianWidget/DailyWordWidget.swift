@@ -34,31 +34,53 @@ struct DailyWordWidgetView: View {
             inlineContent
         case .accessoryCircular:
             circularContent
+        case .accessoryRectangular:
+            lockScreenRectangularContent
         default:
-            stackedContent
+            springboardContent
         }
     }
 
-    private var stackedContent: some View {
+    private var springboardContent: some View {
         VStack(alignment: .leading, spacing: 7) {
             if let word = entry.word {
-                Text(word.russian)
-                    .font(.title.weight(.bold))
-                    .foregroundStyle(.white)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.4)
+                if usesCompactGrammarLayout(word) {
+                    compactTitleLine(
+                        for: word,
+                        wordFont: .title3.weight(.bold),
+                        separatorFont: .title3,
+                        pronunciationFont: .subheadline.weight(.medium).italic(),
+                        wordColor: .white,
+                        separatorColor: .white.opacity(0.9),
+                        pronunciationColor: .white.opacity(0.68)
+                    )
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.35)
 
-                Text(word.pronunciation)
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(.white.opacity(0.82))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
+                    Text(word.translation)
+                        .font(.subheadline)
+                        .foregroundStyle(.white.opacity(0.9))
+                        .lineLimit(3)
+                        .minimumScaleFactor(0.6)
+                } else {
+                    Text(word.russian)
+                        .font(.title.weight(.bold))
+                        .foregroundStyle(.white)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.4)
 
-                Text(word.shortMeaning)
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.88))
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.65)
+                    Text(word.pronunciation)
+                        .font(.subheadline.weight(.medium).italic())
+                        .foregroundStyle(.white.opacity(0.68))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+
+                    Text(word.translation)
+                        .font(.subheadline)
+                        .foregroundStyle(.white.opacity(0.9))
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.65)
+                }
             } else {
                 Text("All words learned")
                     .font(.headline.weight(.bold))
@@ -73,16 +95,108 @@ struct DailyWordWidgetView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     }
 
+    private var lockScreenRectangularContent: some View {
+        VStack(alignment: .center, spacing: 3) {
+            if let word = entry.word {
+                if usesCompactGrammarLayout(word) {
+                    compactTitleLine(
+                        for: word,
+                        wordFont: .headline.weight(.bold),
+                        separatorFont: .headline,
+                        pronunciationFont: .caption.weight(.medium).italic(),
+                        wordColor: .primary,
+                        separatorColor: .primary,
+                        pronunciationColor: .primary.opacity(0.75)
+                    )
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.4)
+                        .multilineTextAlignment(.center)
+
+                    Text(word.translation)
+                        .font(.caption2)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.5)
+                        .multilineTextAlignment(.center)
+                } else {
+                    Text(word.russian)
+                        .font(.headline.weight(.bold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.45)
+                        .multilineTextAlignment(.center)
+
+                    Text(word.pronunciation)
+                        .font(.caption.weight(.medium).italic())
+                        .foregroundStyle(.primary.opacity(0.75))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.55)
+                        .multilineTextAlignment(.center)
+
+                    Text(word.translation)
+                        .font(.caption2)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.55)
+                        .multilineTextAlignment(.center)
+                }
+            } else {
+                Text("All words learned")
+                    .font(.headline.weight(.bold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                    .multilineTextAlignment(.center)
+                Text("You finished the list")
+                    .font(.caption2)
+                    .lineLimit(1)
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        .widgetAccentable()
+    }
+
     private var circularContent: some View {
-        VStack(spacing: 2) {
-            Text(entry.word?.russian ?? "✓")
-                .font(.headline.weight(.bold))
-                .lineLimit(1)
-                .minimumScaleFactor(0.45)
-            Text(entry.word?.shortMeaning ?? "done")
-                .font(.caption2)
-                .lineLimit(1)
-                .minimumScaleFactor(0.55)
+        VStack(alignment: .center, spacing: 1) {
+            if let word = entry.word {
+                if usesCompactGrammarLayout(word) {
+                    compactTitleLine(
+                        for: word,
+                        wordFont: .caption.weight(.bold),
+                        separatorFont: .caption,
+                        pronunciationFont: .caption2.italic(),
+                        wordColor: .primary,
+                        separatorColor: .primary,
+                        pronunciationColor: .primary.opacity(0.75)
+                    )
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.35)
+                        .multilineTextAlignment(.center)
+                    Text(word.translation)
+                        .font(.caption2)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.4)
+                        .multilineTextAlignment(.center)
+                } else {
+                    Text(word.russian)
+                        .font(.headline.weight(.bold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.4)
+                        .multilineTextAlignment(.center)
+                    Text(word.pronunciation)
+                        .font(.caption2.italic())
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.45)
+                        .multilineTextAlignment(.center)
+                    Text(word.translation)
+                        .font(.caption2)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.45)
+                        .multilineTextAlignment(.center)
+                }
+            } else {
+                Text("✓")
+                    .font(.headline.weight(.bold))
+                Text("done")
+                    .font(.caption2)
+            }
         }
         .widgetAccentable()
     }
@@ -97,7 +211,43 @@ struct DailyWordWidgetView: View {
             return "Daily Russian: all words learned"
         }
 
-        return "\(word.russian) • \(word.pronunciation) · \(word.shortMeaning)"
+        return "\(titleLine(for: word)) · \(word.translation)"
+    }
+
+    private func titleLine(for word: DailyRussianWord) -> String {
+        "\(word.russian) • \(word.pronunciation)"
+    }
+
+    private func compactTitleLine(
+        for word: DailyRussianWord,
+        wordFont: Font,
+        separatorFont: Font,
+        pronunciationFont: Font,
+        wordColor: Color,
+        separatorColor: Color,
+        pronunciationColor: Color
+    ) -> some View {
+        HStack(spacing: 0) {
+            Text(word.russian)
+                .font(wordFont)
+                .foregroundStyle(wordColor)
+            Text(" • ")
+                .font(separatorFont)
+                .foregroundStyle(separatorColor)
+            Text(word.pronunciation)
+                .font(pronunciationFont)
+                .foregroundStyle(pronunciationColor)
+        }
+    }
+
+    private func usesCompactGrammarLayout(_ word: DailyRussianWord) -> Bool {
+        let wordClass = word.partOfSpeech.lowercased()
+        return word.russian.count <= 4
+            || wordClass.contains("pron")
+            || wordClass.contains("prep")
+            || wordClass.contains("particle")
+            || wordClass.contains("adverb")
+            || wordClass.contains("conj")
     }
 }
 
@@ -120,12 +270,26 @@ struct DailyWordWidget: Widget {
         }
         .configurationDisplayName("Daily Russian Word")
         .description("Learn one new Russian word every day.")
-        .supportedFamilies([
+        .supportedFamilies(supportedFamilies)
+    }
+
+    private var supportedFamilies: [WidgetFamily] {
+        #if DEBUG
+        [
+            .systemSmall,
+            .systemMedium,
+            .accessoryInline,
+            .accessoryCircular,
+            .accessoryRectangular,
+        ]
+        #else
+        [
             .systemSmall,
             .accessoryInline,
             .accessoryCircular,
             .accessoryRectangular,
-        ])
+        ]
+        #endif
     }
 }
 

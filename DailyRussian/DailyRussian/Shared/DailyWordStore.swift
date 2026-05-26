@@ -1,34 +1,24 @@
 import Foundation
 
-struct DailyRussianWord: Codable, Equatable, Identifiable {
-    let id: String
+struct DailyRussianWordExample: Codable, Equatable {
+    let russian: String
+    let translation: String
+}
+
+struct DailyRussianWord: Codable, Equatable {
+    let rank: Int
     let russian: String
     let pronunciation: String
-    let shortMeaning: String
-    let explanation: String
-    let exampleRussian: String
-    let exampleMeaning: String
+    let translation: String
+    let partOfSpeech: String
+    let details: String
+    let examples: [DailyRussianWordExample]
 }
 
 struct DailyWordState: Codable, Equatable {
-    var displayedWordIDs: [String] = []
-    var currentWordID: String?
+    var displayedWordRanks: [Int] = []
+    var currentWordRank: Int?
     var currentDayStart: Date?
-}
-
-enum DailyWordCatalog {
-    static let words: [DailyRussianWord] = [
-        DailyRussianWord(id: "privet", russian: "Привет", pronunciation: "privet", shortMeaning: "hello", explanation: "A casual greeting used with friends, family, and people you know well.", exampleRussian: "Привет, как дела?", exampleMeaning: "Hi, how are you?"),
-        DailyRussianWord(id: "pozhaluysta", russian: "Пожалуйста", pronunciation: "pozhaluysta", shortMeaning: "please / you're welcome", explanation: "Used both to ask politely and to respond to thanks.", exampleRussian: "Пожалуйста, говорите медленно.", exampleMeaning: "Please speak slowly."),
-        DailyRussianWord(id: "segodnya", russian: "Сегодня", pronunciation: "segodnya", shortMeaning: "today", explanation: "An adverb used for the current day.", exampleRussian: "Сегодня холодно.", exampleMeaning: "It is cold today."),
-        DailyRussianWord(id: "dostoprimechatelnost", russian: "Достопримечательность", pronunciation: "dostoprimechatelnost", shortMeaning: "landmark / attraction", explanation: "A long noun for a notable place tourists visit, such as a monument or landmark.", exampleRussian: "Это главная достопримечательность города.", exampleMeaning: "This is the city's main landmark."),
-        DailyRussianWord(id: "elektrostantsiya", russian: "Электростанция", pronunciation: "elektrostantsiya", shortMeaning: "power station", explanation: "A compound-style noun for a facility that produces electricity.", exampleRussian: "Электростанция находится за городом.", exampleMeaning: "The power station is outside the city."),
-        DailyRussianWord(id: "blagodarnost", russian: "Благодарность", pronunciation: "blagodarnost", shortMeaning: "gratitude", explanation: "A noun for the feeling or expression of thankfulness.", exampleRussian: "Я чувствую благодарность.", exampleMeaning: "I feel gratitude."),
-        DailyRussianWord(id: "puteshestvie", russian: "Путешествие", pronunciation: "puteshestvie", shortMeaning: "journey / trip", explanation: "A noun for a journey, trip, or travel experience.", exampleRussian: "Наше путешествие начинается завтра.", exampleMeaning: "Our journey starts tomorrow."),
-        DailyRussianWord(id: "vzaimoponimanie", russian: "Взаимопонимание", pronunciation: "vzaimoponimanie", shortMeaning: "mutual understanding", explanation: "A long abstract noun for understanding between people.", exampleRussian: "Нам нужно взаимопонимание.", exampleMeaning: "We need mutual understanding."),
-        DailyRussianWord(id: "otvetstvennost", russian: "Ответственность", pronunciation: "otvetstvennost", shortMeaning: "responsibility", explanation: "A noun for responsibility or accountability.", exampleRussian: "Это большая ответственность.", exampleMeaning: "This is a big responsibility."),
-        DailyRussianWord(id: "samostoyatelnost", russian: "Самостоятельность", pronunciation: "samostoyatelnost", shortMeaning: "independence", explanation: "A noun for the ability to act or live independently.", exampleRussian: "Самостоятельность важна.", exampleMeaning: "Independence is important."),
-    ]
 }
 
 struct DailyWordStore {
@@ -57,7 +47,7 @@ struct DailyWordStore {
         return advanceToNextWord(in: &state, dayStart: todayStart, allowsTestingReset: true)
         #else
         if state.currentDayStart == todayStart,
-           let currentWord = word(withID: state.currentWordID) {
+           let currentWord = word(withRank: state.currentWordRank) {
             return currentWord
         }
 
@@ -87,9 +77,9 @@ struct DailyWordStore {
         defaults.set(data, forKey: Keys.state)
     }
 
-    private func word(withID id: String?) -> DailyRussianWord? {
-        guard let id else { return nil }
-        return DailyWordCatalog.words.first { $0.id == id }
+    private func word(withRank rank: Int?) -> DailyRussianWord? {
+        guard let rank else { return nil }
+        return DailyWordCatalog.words.first { $0.rank == rank }
     }
 
     private func advanceToNextWord(
@@ -97,31 +87,31 @@ struct DailyWordStore {
         dayStart: Date,
         allowsTestingReset: Bool = false
     ) -> DailyRussianWord? {
-        var displayedWordIDs = state.displayedWordIDs
+        var displayedWordRanks = state.displayedWordRanks
 
         if allowsTestingReset,
-           nextUnseenWord(excluding: displayedWordIDs) == nil {
-            displayedWordIDs = []
-            state.displayedWordIDs = []
+           nextUnseenWord(excluding: displayedWordRanks) == nil {
+            displayedWordRanks = []
+            state.displayedWordRanks = []
         }
 
-        guard let nextWord = nextUnseenWord(excluding: displayedWordIDs) else {
-            state.currentWordID = nil
+        guard let nextWord = nextUnseenWord(excluding: displayedWordRanks) else {
+            state.currentWordRank = nil
             state.currentDayStart = dayStart
             saveState(state)
             return nil
         }
 
-        state.currentWordID = nextWord.id
+        state.currentWordRank = nextWord.rank
         state.currentDayStart = dayStart
-        state.displayedWordIDs.append(nextWord.id)
+        state.displayedWordRanks.append(nextWord.rank)
         saveState(state)
         return nextWord
     }
 
-    private func nextUnseenWord(excluding displayedWordIDs: [String]) -> DailyRussianWord? {
+    private func nextUnseenWord(excluding displayedWordRanks: [Int]) -> DailyRussianWord? {
         DailyWordCatalog.words
-            .filter { !displayedWordIDs.contains($0.id) }
+            .filter { !displayedWordRanks.contains($0.rank) }
             .randomElement()
     }
 }
